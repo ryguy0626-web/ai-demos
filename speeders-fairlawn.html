@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Demo — Speeders Car Wash Fair Lawn</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080810;--s:#0f0f1a;--s2:#161625;--bd:#252538;--green:#00e5a0;--blue:#4d7cfe;--text:#e6e6f0;--muted:#5a5a78;--orange:#ff7043;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(77,124,254,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(77,124,254,0.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
+.page{max-width:860px;margin:0 auto;padding:32px 20px 60px;position:relative;z-index:1;}
+.back{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;text-decoration:none;margin-bottom:24px;transition:color .2s;}
+.back:hover{color:var(--green);}
+.biz-header{background:var(--s);border:1px solid var(--bd);border-radius:16px;padding:22px 24px;margin-bottom:20px;display:flex;align-items:center;gap:18px;}
+.biz-icon{font-size:36px;width:60px;height:60px;background:var(--s2);border:1px solid var(--bd);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.biz-name{font-family:'Syne',sans-serif;font-size:clamp(16px,3vw,22px);font-weight:800;margin-bottom:4px;}
+.biz-meta{font-size:11px;color:var(--muted);line-height:1.8;}
+.biz-meta span{color:var(--green);}
+.badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,112,67,0.08);border:1px solid rgba(255,112,67,0.2);border-radius:6px;padding:4px 9px;font-size:10px;color:var(--orange);margin-top:4px;}
+.live-badge{margin-left:auto;display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;}
+.live-pill{display:flex;align-items:center;gap:6px;background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.2);border-radius:20px;padding:5px 12px;font-size:10px;color:var(--green);letter-spacing:.08em;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.4s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.main{display:grid;grid-template-columns:3fr 2fr;gap:16px;}
+@media(max-width:640px){.main{grid-template-columns:1fr;}}
+.chat-box{background:var(--s);border:1px solid var(--bd);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;}
+.chat-header{padding:12px 16px;border-bottom:1px solid var(--bd);background:var(--s2);display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);}
+.quick-wrap{padding:10px 12px 2px;display:flex;flex-wrap:wrap;gap:6px;}
+.qb{background:rgba(77,124,254,0.07);border:1px solid rgba(77,124,254,0.2);border-radius:20px;padding:5px 11px;font-size:11px;color:#8ba4ff;cursor:pointer;font-family:'DM Mono',monospace;transition:all .2s;}
+.qb:hover{background:rgba(77,124,254,0.14);color:#b0c4ff;}
+.msgs{min-height:280px;max-height:340px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
+.msgs::-webkit-scrollbar{width:3px;}
+.msgs::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px;}
+.msg{display:flex;gap:8px;animation:pop .25s ease;}
+@keyframes pop{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{flex-direction:row-reverse;}
+.av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.ai .av{background:rgba(0,229,160,0.12);border:1px solid rgba(0,229,160,0.25);}
+.user .av{background:rgba(77,124,254,0.12);border:1px solid rgba(77,124,254,0.25);}
+.bubble{max-width:88%;padding:9px 13px;border-radius:11px;font-size:12.5px;line-height:1.65;}
+.ai .bubble{background:var(--s2);border:1px solid var(--bd);border-top-left-radius:3px;}
+.user .bubble{background:rgba(77,124,254,0.12);border:1px solid rgba(77,124,254,0.25);border-top-right-radius:3px;color:#a8bcff;}
+.speak-btn{background:none;border:none;cursor:pointer;font-size:13px;opacity:0.45;transition:all .2s;padding:2px 5px;flex-shrink:0;align-self:flex-end;margin-bottom:2px;}
+.speak-btn:hover{opacity:1;}
+.speak-btn.playing{opacity:1;animation:pulse 0.8s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+.ai .bubble-wrap{display:flex;align-items:flex-end;gap:4px;}
+.typing{display:flex;gap:4px;align-items:center;padding:11px 14px;}
+.typing span{width:5px;height:5px;border-radius:50%;background:var(--green);animation:tb 1.1s infinite;}
+.typing span:nth-child(2){animation-delay:.18s}.typing span:nth-child(3){animation-delay:.36s}
+@keyframes tb{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+.input-row{padding:11px;border-top:1px solid var(--bd);display:flex;gap:8px;}
+.chat-in{flex:1;background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;outline:none;transition:border-color .2s;}
+.chat-in:focus{border-color:rgba(0,229,160,.35);}
+.chat-in::placeholder{color:var(--muted);}
+.send{background:var(--green);color:#000;border:none;border-radius:8px;width:36px;height:36px;cursor:pointer;font-size:15px;font-weight:bold;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
+.send:hover{background:#00ffb2;transform:scale(1.05);}
+.send:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.side{display:flex;flex-direction:column;gap:12px;}
+.card{background:var(--s);border:1px solid var(--bd);border-radius:14px;overflow:hidden;}
+.card-head{padding:10px 14px;border-bottom:1px solid var(--bd);background:var(--s2);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;}
+.card-body{padding:14px;display:flex;flex-direction:column;gap:10px;}
+.info-row{display:flex;justify-content:space-between;align-items:flex-start;font-size:12px;gap:8px;}
+.info-row .lbl{color:var(--muted);flex-shrink:0;}
+.info-row .val{color:var(--text);text-align:right;}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px;}
+.stat{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:10px;text-align:center;}
+.stat .n{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--green);}
+.stat .d{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
+.status-row{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--green);padding:0 14px 14px;}
+.voice-panel{background:var(--s);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:16px;}
+.voice-panel .card-head{padding:10px 14px;border-bottom:1px solid var(--bd);background:var(--s2);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;}
+.voice-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;padding:12px;}
+.voice-btn{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;cursor:pointer;text-align:left;transition:all .2s;font-family:'DM Mono',monospace;}
+.voice-btn:hover{border-color:rgba(0,229,160,.3);background:#1a1a2e;}
+.voice-btn.active{border-color:var(--green);background:rgba(0,229,160,0.07);}
+.voice-btn.previewing{border-color:var(--orange);}
+.vname{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.vtags{font-size:10px;color:var(--muted);line-height:1.5;}
+.vpreview{font-size:10px;color:var(--green);margin-top:5px;opacity:0;}
+.voice-btn.active .vpreview{opacity:1;}
+.voice-btn.previewing .vpreview{opacity:1;color:var(--orange);}
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="back" href="index.html">← All Businesses</a>
+
+  <div class="biz-header">
+    <div class="biz-icon">🚗</div>
+    <div>
+      <div class="biz-name">Speeders Car Wash — Fair Lawn</div>
+      <div class="biz-meta">
+        📍 17-16 River Rd, Fair Lawn, NJ 07410 · <span>(561) 556-9274</span><br>
+        🕐 Mon–Sat 8am–7pm · Sun 8am–6pm · <span>Open rain or shine</span><br>
+        🚿 Express car wash · Unlimited membership plans available
+      </div>
+      <div class="badge">⚡ Membership-Focused Express Wash</div>
+    </div>
+    <div class="live-badge">
+      <div class="live-pill"><div class="dot"></div>AI LIVE</div>
+    </div>
+  </div>
+
+  <div class="voice-panel">
+    <div class="card-head">🎙️ Choose a Voice — Click to preview, selected voice plays on all 🔊 buttons</div>
+    <div class="voice-grid">
+      <button class="voice-btn active" onclick="selectVoice('EXAVITQu4vr4xnSDxMaL','Sarah',this)">
+        <div class="vname">Sarah</div>
+        <div class="vtags">Female · American<br>Warm &amp; professional</div>
+        <div class="vpreview">✓ Selected</div>
+      </button>
+      <button class="voice-btn" onclick="selectVoice('TX3LPaxmHKxFdv7VOQHJ','Liam',this)">
+        <div class="vname">Liam</div>
+        <div class="vtags">Male · American<br>Articulate &amp; calm</div>
+        <div class="vpreview">✓ Selected</div>
+      </button>
+      <button class="voice-btn" onclick="selectVoice('pFZP5JQG7iQjIQuC4Bku','Lily',this)">
+        <div class="vname">Lily</div>
+        <div class="vtags">Female · British<br>Warm &amp; confident</div>
+        <div class="vpreview">✓ Selected</div>
+      </button>
+      <button class="voice-btn" onclick="selectVoice('onwK4e9ZLuTAKqWW03F9','Daniel',this)">
+        <div class="vname">Daniel</div>
+        <div class="vtags">Male · British<br>Deep &amp; authoritative</div>
+        <div class="vpreview">✓ Selected</div>
+      </button>
+      <button class="voice-btn" onclick="selectVoice('XB0fDUnXU5powFXDhCwa','Charlotte',this)">
+        <div class="vname">Charlotte</div>
+        <div class="vtags">Female · British<br>Clear &amp; confident</div>
+        <div class="vpreview">✓ Selected</div>
+      </button>
+      <button class="voice-btn" onclick="selectVoice('IKne3meq5aSn9XLyUdCD','Charlie',this)">
+        <div class="vname">Charlie</div>
+        <div class="vtags">Male · Australian<br>Casual &amp; friendly</div>
+        <div class="vpreview">✓ Selected</div>
+      </button>
+      <button class="voice-btn" onclick="selectVoice('XrExE9yKIg1WjnnlVkGX','Matilda',this)">
+        <div class="vname">Matilda</div>
+        <div class="vtags">Female · American<br>Friendly &amp; upbeat</div>
+        <div class="vpreview">✓ Selected</div>
+      </button>
+      <button class="voice-btn" onclick="selectVoice('CwhRBWXzGAHq8TQ4Fs17','Roger',this)">
+        <div class="vname">Roger</div>
+        <div class="vtags">Male · American<br>Confident &amp; assured</div>
+        <div class="vpreview">✓ Selected</div>
+      </button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="chat-box">
+      <div class="chat-header">
+        <span style="font-size:15px;">🤖</span>
+        <div>
+          <div style="color:var(--text);font-weight:500;">AI Receptionist</div>
+          <div>Answering as Speeders Car Wash</div>
+        </div>
+        <div style="margin-left:auto;font-size:10px;color:var(--green);">● LIVE DEMO</div>
+      </div>
+
+      <div class="quick-wrap">
+        <button class="qb" onclick="sendQ('What are your hours today?')">Hours today?</button>
+        <button class="qb" onclick="sendQ('How much does the unlimited membership cost?')">Membership pricing?</button>
+        <button class="qb" onclick="sendQ('Do you stay open when it rains?')">Open in rain?</button>
+        <button class="qb" onclick="sendQ('How do I cancel my membership?')">Cancel membership?</button>
+        <button class="qb" onclick="sendQ('What wash packages do you offer?')">Wash packages?</button>
+      </div>
+
+      <div class="msgs" id="msgs"></div>
+
+      <div class="input-row">
+        <input class="chat-in" id="inp" type="text" placeholder="Ask anything as a caller..." onkeydown="if(event.key==='Enter')send()">
+        <button class="send" id="sendBtn" onclick="send()">↑</button>
+      </div>
+    </div>
+
+    <div class="side">
+      <div class="card">
+        <div class="card-head">Location Info</div>
+        <div class="card-body">
+          <div class="info-row"><span class="lbl">Address</span><span class="val">17-16 River Rd, Fair Lawn</span></div>
+          <div class="info-row"><span class="lbl">Phone</span><span class="val">(561) 556-9274</span></div>
+          <div class="info-row"><span class="lbl">Mon–Sat</span><span class="val">8:00am – 7:00pm</span></div>
+          <div class="info-row"><span class="lbl">Sunday</span><span class="val">8:00am – 6:00pm</span></div>
+          <div class="info-row"><span class="lbl">Weather</span><span class="val" style="color:var(--green);">Almost never closes</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">AI Performance</div>
+        <div class="stats">
+          <div class="stat"><div class="n">24/7</div><div class="d">Available</div></div>
+          <div class="stat"><div class="n">0s</div><div class="d">Hold Time</div></div>
+          <div class="stat"><div class="n">100%</div><div class="d">Answered</div></div>
+          <div class="stat"><div class="n">∞</div><div class="d">Capacity</div></div>
+        </div>
+        <div class="status-row"><div class="dot"></div> Answering calls right now</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">What It Handles</div>
+        <div class="card-body" style="font-size:12px;color:var(--muted);line-height:1.8;">
+          ✅ Hours & location questions<br>
+          ✅ Membership pricing & signup<br>
+          ✅ Membership cancellations<br>
+          ✅ Wash package questions<br>
+          ✅ Weather & closure questions<br>
+          ✅ Never misses a membership lead
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let VOICE_ID = "EXAVITQu4vr4xnSDxMaL";
+
+function selectVoice(id, name, btn) {
+  VOICE_ID = id;
+  document.querySelectorAll('.voice-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Auto-preview
+  const previewText = "Thanks for calling Speeders Car Wash! How can I help you today?";
+  const dummy = document.createElement('button');
+  dummy.className = 'speak-btn';
+  dummy.textContent = '🔊';
+  speakText(previewText, dummy);
+}
+
+async function speakText(text, btn) {
+  if (btn.classList.contains('playing')) return;
+  btn.classList.add('playing'); btn.textContent = '⏸';
+  try {
+    const r = await fetch(`https://ai-proxy.fpjxg9fnzj.workers.dev/elevenlabs`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json',},
+      body:JSON.stringify({voice_id:VOICE_ID,text,model_id:'eleven_monolingual_v1',voice_settings:{stability:0.5,similarity_boost:0.75}})
+    });
+    const blob = await r.blob();
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    audio.onended = ()=>{btn.classList.remove('playing');btn.textContent='🔊';};
+    audio.onerror = ()=>{btn.classList.remove('playing');btn.textContent='🔊';};
+    audio.play();
+  } catch(e){btn.classList.remove('playing');btn.textContent='🔊';}
+}
+
+let history = [];
+let busy = false;
+
+function addMsg(role, text) {
+  const d = document.createElement('div');
+  d.className = 'msg ' + role;
+  if (role === 'ai') {
+    const safeText = text.replace(/\\/g,'\\\\').replace(/`/g,'\\`').replace(/\$/g,'\\$');
+    d.innerHTML = `<div class="av">🤖</div><div class="bubble-wrap"><div class="bubble">${text}</div><button class="speak-btn" onclick="speakText(\`${safeText}\`, this)">🔊</button></div>`;
+  } else {
+    d.innerHTML = `<div class="av">👤</div><div class="bubble">${text}</div>`;
+  }
+  document.getElementById('msgs').appendChild(d);
+  document.getElementById('msgs').scrollTop = 99999;
+}
+
+function showTyping() {
+  const d = document.createElement('div');
+  d.className = 'msg ai'; d.id = 'typ';
+  d.innerHTML = '<div class="av">🤖</div><div class="bubble typing"><span></span><span></span><span></span></div>';
+  document.getElementById('msgs').appendChild(d);
+  document.getElementById('msgs').scrollTop = 99999;
+}
+
+function sendQ(text) {
+  document.getElementById('inp').value = text;
+  send();
+}
+
+async function send() {
+  const inp = document.getElementById('inp');
+  const text = inp.value.trim();
+  if (!text || busy) return;
+  inp.value = ''; busy = true;
+  document.getElementById('sendBtn').disabled = true;
+  addMsg('user', text);
+  history.push({role:'user', content:text});
+  showTyping();
+  const sys = `You are a friendly, upbeat AI phone receptionist for Speeders Car Wash at 17-16 River Road, Fair Lawn, NJ 07410. Phone: (561) 556-9274. Hours: Monday-Saturday 8am-7pm, Sunday 8am-6pm. We are an express car wash that stays open rain or shine — we almost never close for weather. We offer unlimited wash memberships that members can manage online at speeders.com. For membership cancellations or billing issues, direct customers to hello@russellspeeders.com or the website. We are part of the Russell Speeder's / Summit Wash Holdings family with multiple NJ locations. Keep responses SHORT and upbeat (2-3 sentences max). If someone asks about specific membership prices, say pricing is available at speeders.com or they're welcome to stop in.`;
+  try {
+    const r = await fetch('https://ai-proxy.fpjxg9fnzj.workers.dev/anthropic', {
+      method:'POST',
+      headers:{'Content-Type':'application/json',},
+      body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:history})
+    });
+    const data = await r.json();
+    document.getElementById('typ')?.remove();
+    const reply = data.content?.[0]?.text || "Sorry, could you repeat that?";
+    history.push({role:'assistant', content:reply});
+    addMsg('ai', reply);
+  } catch(e) {
+    document.getElementById('typ')?.remove();
+    addMsg('ai', 'Sorry about that! Please call us directly at (561) 556-9274 or visit speeders.com!');
+  }
+  busy = false;
+  document.getElementById('sendBtn').disabled = false;
+}
+
+window.onload = () => {
+  setTimeout(() => {
+    const greet = `Thanks for calling Speeders Car Wash in Fair Lawn! How can I help you today?`;
+    history.push({role:'assistant', content:greet});
+    addMsg('ai', greet);
+  }, 400);
+};
+</script>
+</body>
+</html>

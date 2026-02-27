@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Phone Receptionist — Demo Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080810;--s:#0f0f1a;--s2:#161625;--bd:#252538;--green:#00e5a0;--blue:#4d7cfe;--text:#e6e6f0;--muted:#5a5a78;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;min-height:100vh;padding:32px 20px 60px;}
+body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(77,124,254,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(77,124,254,0.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
+.wrap{max-width:900px;margin:0 auto;position:relative;z-index:1;}
+.hero{text-align:center;margin-bottom:40px;}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(24px,5vw,42px);font-weight:800;margin-bottom:8px;}
+.hero h1 span{color:var(--green);}
+.hero p{color:var(--muted);font-size:13px;}
+.section-label{font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);margin:28px 0 12px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:8px;}
+.card{background:var(--s);border:1px solid var(--bd);border-radius:14px;padding:16px;text-decoration:none;color:var(--text);transition:all .2s;display:block;}
+.card:hover{border-color:rgba(0,229,160,.3);transform:translateY(-2px);}
+.card.featured{border-color:rgba(0,229,160,.25);background:rgba(0,229,160,.03);}
+.card-icon{font-size:24px;margin-bottom:8px;}
+.card-name{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin-bottom:4px;}
+.card-meta{font-size:11px;color:var(--muted);line-height:1.6;}
+.badge{display:inline-flex;align-items:center;gap:4px;background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.2);border-radius:10px;padding:2px 8px;font-size:9px;color:var(--green);margin-top:6px;}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1.4s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>AI Phone <span>Receptionist</span> Demos</h1>
+    <p>Live demos built specifically for each business — click any card to try it</p>
+  </div>
+
+  <div class="section-label">⭐ Featured — Voice Enabled</div>
+  <div class="grid">
+    <a class="card featured" href="song-e-napule.html">
+      <div class="card-icon">🍕</div>
+      <div class="card-name">Song'E Napule</div>
+      <div class="card-meta">106 Park Ave, Rutherford NJ<br>Authentic Neapolitan · Owner: Ciro Iovine</div>
+      <div class="badge"><div class="dot"></div>Voice + Time Aware</div>
+    </a>
+    <a class="card featured" href="ridgetop.html">
+      <div class="card-icon">🏢</div>
+      <div class="card-name">Ridgetop Corporation</div>
+      <div class="card-meta">165 Grand Ave, Englewood NJ<br>Luxury Apartments · Est. 1966</div>
+      <div class="badge"><div class="dot"></div>Voice + Time Aware</div>
+    </a>
+    <a class="card featured" href="speeders-fairlawn.html">
+      <div class="card-icon">🚗</div>
+      <div class="card-name">Speeders Car Wash</div>
+      <div class="card-meta">17-16 River Rd, Fair Lawn NJ<br>Express Car Wash · Open 7 Days</div>
+      <div class="badge"><div class="dot"></div>Voice Enabled</div>
+    </a>
+    <a class="card featured" href="purelux-powerwashing.html">
+      <div class="card-icon">💧</div>
+      <div class="card-name">PureLux Power Washing</div>
+      <div class="card-meta">Park Ridge, NJ<br>Residential & Commercial</div>
+      <div class="badge"><div class="dot"></div>Live AI</div>
+    </a>
+  </div>
+
+  <div class="section-label">🚗 Auto & Repair</div>
+  <div class="grid">
+    <a class="card" href="mcpeeks.html"><div class="card-icon">🔧</div><div class="card-name">McPeek's Tire</div><div class="card-meta">Ramsey, NJ · Owner: Tommy</div></a>
+    <a class="card" href="ramsey-auto-clinic.html"><div class="card-icon">🔧</div><div class="card-name">Ramsey Auto Clinic</div><div class="card-meta">Ramsey, NJ · Owner: George</div></a>
+    <a class="card" href="garden-state-auto.html"><div class="card-icon">🚘</div><div class="card-name">Garden State Auto</div><div class="card-meta">NJ Area</div></a>
+    <a class="card" href="complete-car-cure.html"><div class="card-icon">🚘</div><div class="card-name">Complete Car Cure</div><div class="card-meta">NJ Area</div></a>
+    <a class="card" href="mahwah-auto.html"><div class="card-icon">🔧</div><div class="card-name">Mahwah Auto</div><div class="card-meta">Mahwah, NJ</div></a>
+    <a class="card" href="park-auto-body.html"><div class="card-icon">🚗</div><div class="card-name">Park Auto Body</div><div class="card-meta">NJ Area</div></a>
+  </div>
+
+  <div class="section-label">⚡ Trades & Services</div>
+  <div class="grid">
+    <a class="card" href="capital-electric.html"><div class="card-icon">⚡</div><div class="card-name">Capital Electrical</div><div class="card-meta">NJ Area · Owner: Orlando Blanco</div></a>
+    <a class="card" href="aci-electric.html"><div class="card-icon">⚡</div><div class="card-name">ACI Electric</div><div class="card-meta">NJ Area</div></a>
+    <a class="card" href="puzio-electric.html"><div class="card-icon">⚡</div><div class="card-name">J.K. Puzio Electric</div><div class="card-meta">NJ Area</div></a>
+    <a class="card" href="revere-plumbing.html"><div class="card-icon">🔩</div><div class="card-name">Revere Plumbing</div><div class="card-meta">NJ Area</div></a>
+    <a class="card" href="rjp-plumbing.html"><div class="card-icon">🔩</div><div class="card-name">RJP Plumbing</div><div class="card-meta">NJ Area</div></a>
+  </div>
+
+  <div class="section-label">🍽️ Restaurants & Food</div>
+  <div class="grid">
+    <a class="card" href="al-dente.html"><div class="card-icon">🍝</div><div class="card-name">Al Dente</div><div class="card-meta">NJ Area · Italian</div></a>
+    <a class="card" href="little-kitchen.html"><div class="card-icon">🍳</div><div class="card-name">The Little Kitchen</div><div class="card-meta">NJ Area · Owner: Adrienne Cirillo</div></a>
+    <a class="card" href="gigis-cafe.html"><div class="card-icon">☕</div><div class="card-name">Gigi's Cafe</div><div class="card-meta">NJ Area</div></a>
+    <a class="card" href="grumpys-pizza.html"><div class="card-icon">🍕</div><div class="card-name">Grumpy's Pizza</div><div class="card-meta">NJ Area</div></a>
+    <a class="card" href="madina-halal.html"><div class="card-icon">🥘</div><div class="card-name">Madina Halal Platters</div><div class="card-meta">Elmwood Park, NJ · 4.9 ⭐</div></a>
+    <a class="card" href="dominican-republic.html"><div class="card-icon">🍛</div><div class="card-name">Made in Dominican Republic</div><div class="card-meta">Saddle Brook, NJ · 4.8 ⭐</div></a>
+    <a class="card" href="ep-diner.html"><div class="card-icon">🍳</div><div class="card-name">Elmwood Park Diner</div><div class="card-meta">Elmwood Park, NJ</div></a>
+    <a class="card" href="state-line-diner.html"><div class="card-icon">🍳</div><div class="card-name">State Line Diner</div><div class="card-meta">NJ Area</div></a>
+    <a class="card" href="mason-jar.html"><div class="card-icon">🍺</div><div class="card-name">Mason Jar</div><div class="card-meta">Mahwah, NJ</div></a>
+    <a class="card" href="smyrna.html"><div class="card-icon">🍽️</div><div class="card-name">Smyrna</div><div class="card-meta">NJ Area</div></a>
+    <a class="card" href="taverna-mykonos.html"><div class="card-icon">🫒</div><div class="card-name">Taverna Mykonos</div><div class="card-meta">NJ Area · Greek</div></a>
+  </div>
+</div>
+</body>
+</html>
